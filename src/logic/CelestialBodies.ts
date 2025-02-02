@@ -1,13 +1,11 @@
+import bodiesExample, { BodiesExample, keyofBodies } from "./bodiesData";
 import { computeAcceleration } from "./symplectic-leapfrog-integrator";
 
-const DELAY_TIME = 0.01;
+const DELAY_TIME = 0.005;
 const listeners: Set<() => void> = new Set();
 
-let bodies: CelestialBody[] = [
-  { x: -1, y: 0, vx: 0, vy: 0.5, mass: 1 },
-  { x: 1, y: 0, vx: 0, vy: -0.5, mass: 1 },
-  { x: 0, y: 1, vx: -0.5, vy: 0, mass: 1 },
-];
+let currentBodies: BodiesExample = keyofBodies[0];
+let bodies: CelestialBody[] = JSON.parse(JSON.stringify(bodiesExample[currentBodies]));
 
 export function updateBodies(dt = DELAY_TIME) {
   const halfDt = dt / 2;
@@ -46,4 +44,10 @@ export function bodiesSubscribe(listener: () => void) {
 
 export function getBodiesSnapshot() {
   return bodies;
+}
+
+export function changeBodies(bodiesKey: BodiesExample) {
+  currentBodies = bodiesKey;
+  bodies = JSON.parse(JSON.stringify(bodiesExample[currentBodies]));
+  listeners.forEach((listener) => listener());
 }
