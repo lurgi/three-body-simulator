@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { FaBars } from "react-icons/fa";
 import { useMediaQuery } from "./hooks/useMediaQuery";
+import { changeBodies } from "./logic/CelestialBodies";
+import { BodiesExample, keyofBodies } from "./logic/bodiesData";
 
 export default function MobileSidebar() {
   const [open, setOpen] = useState(false);
@@ -36,12 +38,25 @@ export default function MobileSidebar() {
 }
 
 function SidebarContent() {
+  const handleChangeBodies = (key: BodiesExample) => changeBodies(key);
+
+  const formatName = (str: string) => {
+    const words = str.match(/[A-Z]?[a-z]+|[A-Z]+(?![a-z])/g);
+    return words?.map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join("-");
+  };
+
   return (
     <div className="p-8 space-y-4 w-full">
       <h1 className="text-lg">Three Body Simulator</h1>
-      <button className="block p-2 hover:bg-gray-700 rounded w-full">Home</button>
-      <button className="block p-2 hover:bg-gray-700 rounded w-full">Dashboard</button>
-      <button className="block p-2 hover:bg-gray-700 rounded w-full">Settings</button>
+      {keyofBodies.map((key) => (
+        <button
+          key={key}
+          className="block p-2 hover:bg-gray-700 rounded w-full"
+          onClick={() => handleChangeBodies(key)}
+        >
+          {formatName(key)}
+        </button>
+      ))}
     </div>
   );
 }
