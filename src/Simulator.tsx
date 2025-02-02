@@ -17,7 +17,7 @@ camera.position.z = 3;
 Array(3)
   .fill(null)
   .forEach(() => {
-    const geometry = new THREE.SphereGeometry(0.02, 32, 32);
+    const geometry = new THREE.SphereGeometry(0.03, 32, 32);
     const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
     const sphere = new THREE.Mesh(geometry, material);
     scene.add(sphere);
