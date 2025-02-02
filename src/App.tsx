@@ -1,13 +1,16 @@
-import { useEffect, useSyncExternalStore } from "react";
-import "./App.css";
-import { bodiesSubscribe, getBodiesSnapshot, updateBodies } from "./logic/CelestialBodies";
+import { useMediaQuery } from "./hooks/useMediaQuery";
+import Sidebar from "./Sidebar";
+import Simulator from "./Simulator";
 
 export default function App() {
-  const bodies = useSyncExternalStore(bodiesSubscribe, getBodiesSnapshot);
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
-  useEffect(() => {
-    console.log(bodies);
-  }, [bodies]);
-
-  return <button onClick={() => updateBodies()}>Click</button>;
+  return (
+    <div className="flex w-screen h-screen">
+      <Sidebar />
+      <main className={`${isMobile ? "w-full" : "w-[calc(100%-288px)]"} h-full"`}>
+        <Simulator />
+      </main>
+    </div>
+  );
 }
