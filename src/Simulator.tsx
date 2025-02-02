@@ -27,27 +27,28 @@ Array(3)
 export default function Simulator() {
   const mountRef = useRef<HTMLDivElement>(null);
   const bodies = useSyncExternalStore(bodiesSubscribe, getBodiesSnapshot);
+  const resizeAnimationFrameIdRef = useRef<number | null>(null);
+  const updateBodiesAnimationFrameIdRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (!mountRef.current) return;
     mountRef.current.appendChild(renderer.domElement);
     const setRendererSize = () => {
       const { width, height } = mountRef.current?.getBoundingClientRect() || { width: 0, height: 0 };
-      requestAnimationFrame(() => {
+      resizeAnimationFrameIdRef.current = requestAnimationFrame(() => {
         renderer.setSize(width, height);
         renderer.render(scene, camera);
       });
     };
     setRendererSize();
 
-    const resizeObserver = new ResizeObserver(() => {
-      requestAnimationFrame(setRendererSize);
-    });
+    const resizeObserver = new ResizeObserver(setRendererSize);
     resizeObserver.observe(mountRef.current);
 
     return () => {
       mountRef.current?.removeChild(renderer.domElement);
       resizeObserver.disconnect();
+      if (resizeAnimationFrameIdRef.current) cancelAnimationFrame(resizeAnimationFrameIdRef.current);
     };
   }, []);
 
@@ -58,11 +59,14 @@ export default function Simulator() {
 
     renderer.render(scene, camera);
 
-    requestAnimationFrame(() => {
+    updateBodiesAnimationFrameIdRef.current = requestAnimationFrame(() => {
       updateBodies();
     });
 
-    return () => renderer.dispose();
+    return () => {
+      renderer.dispose();
+      if (updateBodiesAnimationFrameIdRef.current) cancelAnimationFrame(updateBodiesAnimationFrameIdRef.current);
+    };
   }, [bodies]);
   return <div ref={mountRef} className="w-full h-full" />;
 }
