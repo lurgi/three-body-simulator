@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { FaBars } from "react-icons/fa";
 import { useMediaQuery } from "./hooks/useMediaQuery";
-import { changeBodies } from "./logic/CelestialBodies";
-import { BodiesExample, keyofBodies } from "./logic/bodiesData";
+import { changeBodies } from "./logic/CelestialBodies.js";
+import { BodiesExample, keyofBodies } from "./logic/constants";
 
 export default function MobileSidebar() {
   const [open, setOpen] = useState(false);

@@ -1,6 +1,6 @@
 const G_FORCE = 1; // 중력 상수 (단순화)
 
-export function computeAcceleration(bodies: CelestialBody[]) {
+export function computeAcceleration(bodies) {
   const accelerations = new Array(bodies.length).fill(null).map(() => ({ ax: 0, ay: 0 }));
 
   for (let i = 0; i < bodies.length; i++) {

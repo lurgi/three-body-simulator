@@ -27,8 +27,6 @@ const bodiesExample = {
   eightShape,
   brouckeStable,
   superFigureEight,
-} as const;
+};
 
-export type BodiesExample = keyof typeof bodiesExample;
-export const keyofBodies = Object.keys(bodiesExample) as BodiesExample[];
 export default bodiesExample;

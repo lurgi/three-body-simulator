@@ -1,6 +1,7 @@
 import { useEffect, useRef, useSyncExternalStore } from "react";
 import * as THREE from "three";
 import { bodiesSubscribe, getBodiesSnapshot, updateBodies } from "./logic/CelestialBodies";
+import { Bodies } from "./logic/constants";
 
 const scene = new THREE.Scene();
 const renderer = new THREE.WebGLRenderer();
@@ -26,7 +27,7 @@ Array(3)
 
 export default function Simulator() {
   const mountRef = useRef<HTMLDivElement>(null);
-  const bodies = useSyncExternalStore(bodiesSubscribe, getBodiesSnapshot);
+  const bodies = useSyncExternalStore<Bodies>(bodiesSubscribe, getBodiesSnapshot);
   const resizeAnimationFrameIdRef = useRef<number | null>(null);
   const updateBodiesAnimationFrameIdRef = useRef<number | null>(null);
 
